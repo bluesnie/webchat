@@ -1,0 +1,49 @@
+/* 模态框样式 */
+.popover {
+    border: none; /* 消除静态框的边框*/
+    height: 0px; /* 消除静态框的高*/
+}
+
+.info-card {
+    width: 500px;
+    background-color: #bbbbbb;
+    color: black;
+}
+
+
+/* 首页列表组样式 */
+.list-group-horizontal .list-group-item {
+    display: inline-block;
+}
+
+.list-group-horizontal .list-group-item {
+    margin-bottom: 0;
+    margin-left: -4px;
+    margin-right: 0;
+}
+
+.list-group-horizontal .list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 4px;
+}
+
+.list-group-horizontal .list-group-item:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 0;
+}
+
+/* 所有th, td样式居中 */
+th,td{
+    text-align: center;
+}
+
+/* 活动详情相关样式 */
+.act-info{
+    color: darkgrey;
+}
+
+/* 活动详情校友 */
+.act-info-alumni img{
+    width: 50px;
+    height: 50px;
+}

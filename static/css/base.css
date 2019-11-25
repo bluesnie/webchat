@@ -1,0 +1,55 @@
+.card-title-font {
+    font-size: 25px;
+}
+
+/*----------弃用-----------*/
+
+/* nav */
+.zs-blue-green {
+    background-color: #29d9b5 !important;
+}
+
+.nav-font-size-s {
+    font-size: 18px;
+    /*padding: 15px 20px;*/
+    line-height: 30px;
+}
+
+.navbar-custom-menu .navbar-nav > li > a {
+    line-height: 30px;
+}
+
+.n-btn {
+    line-height: 30px;
+    font-size: 20px;
+}
+
+.navbar-nav > li > a {
+    line-height: 30px;
+}
+
+.nav-font-size-l {
+    padding: 15px 60px;
+    font-size: 25px;
+    height: 60px;
+    line-height: 30px;
+}
+
+.nav-title {
+    padding-right: 15px;
+}
+
+.nav-avatar {
+    float: left;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -2px;
+}
+
+.breadcrumb-style {
+    background-color: #F6F8FA;
+    border: none;
+    margin-bottom: 0;
+}

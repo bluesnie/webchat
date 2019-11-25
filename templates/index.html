@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+    <style>
+        /* bubble style */
+        .sender {
+            clear: both;
+        }
+
+        .sender div:nth-of-type(1) {
+            float: left;
+        }
+
+        .sender div:nth-of-type(2) {
+            background-color: aquamarine;
+            float: left;
+            margin: 0 20px 10px 15px;
+            padding: 10px 10px 10px 0px;
+            border-radius: 7px;
+        }
+
+        .receiver div:first-child img,
+        .sender div:first-child img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .receiver {
+            clear: both;
+        }
+
+        .receiver div:nth-child(1) {
+            float: right;
+        }
+
+        .receiver div:nth-of-type(2) {
+            float: right;
+            background-color: gold;
+            margin: 0 10px 10px 20px;
+            padding: 10px 0px 10px 10px;
+            border-radius: 7px;
+        }
+
+        .left_triangle {
+            height: 0px;
+            width: 0px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent aquamarine transparent transparent;
+            position: relative;
+            left: -16px;
+            top: 3px;
+        }
+
+        .right_triangle {
+            height: 0px;
+            width: 0px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent gold;
+            position: relative;
+            right: -16px;
+            top: 3px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <ul class="list-group" id="user-list">
+        </ul>
+
+        <ul class="list-group mt-5" id="group-list">
+        </ul>
+    </div>
+
+
+    <!-- Large modal user-list -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true" id="ChatModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="UserNameStatus">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card" style="height: 250px;overflow-y: scroll" id="scroll-card">
+                        <div class="card-body" id="msg-board">
+                            <!-- Left -->
+                            <div class="sender">
+                                <div>
+                                    <img src="{% static 'img/photo4.jpg' %}">
+                                </div>
+                                <div style="width: auto;" class="col-md-10">
+                                    <div class="left_triangle"></div>
+                                    <span> hello, man! </span>
+                                </div>
+                            </div>
+
+                            <!-- Right -->
+                            <div class="receiver">
+                                <div>
+                                    <img src="{% static 'img/photo4.jpg' %}">
+                                </div>
+                                <div style="width: auto;" class="col-md-10">
+                                    <div class="right_triangle"></div>
+                                    <span> hello world </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container text-center" style="width: 100%">
+                        <div class="row" style="width: 100%">
+                            <div class="form-group col-xs-12 col-sm-7">
+                                <input class="form-control" type="text" id="text_message">
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-5 col-md-4">
+
+                                <button class="btn btn-primary" id="send_message"><font
+                                        style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">发信息</font></font></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Large modal create-group-user-list -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true" id="create-group">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="UserNameStatus">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card" style="height: 250px;overflow-y: scroll" id="scroll-card">
+                        <div class="card-body" id="msg-board">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect2">Example multiple select</label>
+                                <select multiple class="form-control" id="user-list-group">
+                                    <option value="1">nzb</option>
+                                    <option value="2">lisi</option>
+                                    <option value="3">laowang</option>
+                                    <option value="4">zhangsan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="create-group-yes" data-dismiss="modal">确定创建群聊</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container text-center mt-3" style="width: 100%">
+        <button class="btn btn-primary" id="close">下线</button>
+        <button class="btn btn-primary" id="open">上线</button>
+    </div>
+
+    <div class="container text-center mt-3" style="width: 100%">
+        <button class="btn btn-primary" id="create_group" data-toggle="modal" data-target="#create-group">创建群聊</button>
+    </div>
+
+    <!--
+<div class="row">
+<div class="col-xs-12">
+<h1><font style="vertical-align: inherit;"><font
+style="vertical-align: inherit;">使用订阅用户进行简单聊天</font></font></h1>
+</div>
+</div>
+<div class="row">
+<div class="col-xs-12 col-md-11 col-lg-10">
+
+
+<pre id="billboard" style="overflow-y: auto; height: 24em; margin-top: 1em;">
+<div class="row" style="width: 100%; height: 100%">
+<div class="col-md-12" id="board-left">
+
+</div>
+<div class="col-md-6" id="board-right"></div>
+</div>
+</pre>
+</div>
+</div>
+
+
+<div class="row">
+<div form-inline="">
+<div class="form-group col-xs-12 col-sm-7">
+<input class="form-control" type="text" id="text_message">
+</div>
+<div class="form-group col-xs-12 col-sm-5 col-md-4">
+
+<button class="btn btn-primary" id="send_message"><font style="vertical-align: inherit;"><font
+    style="vertical-align: inherit;">发信息</font></font></button>
+</div>
+</div>
+</div>
+
+</div>-->
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        let JoinChat = null;
+        $(document).ready(function () {
+            //$(".container").scrollLeft(100);
+            console.log(window.location.host);
+            let user = {{ user.id }};
+            let websocker = null;
+            //let get_websocket = function (user_id=null,chattype=null) {
+            let get_websocket = function () {
+                // 创建websocket/系统频道
+                //let ws = null;
+                let ws = new WebSocket("ws://" + window.location.host + "/msg/");
+                //if(user_id || chattype){
+                //    ws = new WebSocket("ws://" + window.location.host + "/msg/?type=" + chattype + "&user_id=" + user_id);
+                //}
+                //注册error,open,message,close
+                ws.onerror = function () {
+                    console.log("websocket连接错误:", ws);
+                    websocker = null;
+                };
+
+                ws.onopen = function () {
+                    console.log("WebSocket open");
+                    ws.send(JSON.stringify({"type": "online"}));
+                };
+
+                ws.onmessage = function (e) {
+                    //console.log("data:" + e);
+                    //console.log("msg:" + e.data);
+                    try {
+                        let json = $.parseJSON(e.data);
+                        console.log("json:", json);
+                        // 未登录跳转登录界面
+                        if (json['code'] == 400) {
+                            alert("请登录");
+                            window.location.replace("{% url 'login' %}");
+                        } else if (json['code'] == 200) {
+                            let msg_board = $("#msg-board");
+                            switch (json['type']) {
+                                //上线消息
+                                case 'online':
+                                    if (user !== json['user']['pk']) {
+                                        console.log(json['user']['user'] + "上线")
+                                        /*let online_div = `<div class="row">
+                                                        <span>${json['user']['user']}上线</span>
+                                                   </div>`;
+                                        msg_board.append(online_div);*/
+
+                                    }
+                                    break;
+                                // 下线消息
+                                case 'offline':
+                                    if (user !== json['user']['pk']) {
+                                        console.log(json['user']['user'] + "下线")
+                                        /*let offline_div = `<div class="row">
+                                                        <span>${json['user']['user']}下线</span>
+                                                   </div>`;
+                                        msg_board.append(offline_div);*/
+                                    }
+                                    break;
+                                // 消息
+                                case 'msg':
+                                    console.log("没进来吗");
+                                    let msg_div;
+                                    if (user === json['user']['pk']) {
+                                        msg_div = `<div class="receiver">
+                                                            <div>
+                                                                <img src="{% static 'img/photo4.jpg' %}">
+                                                            </div>
+                                                            <div style="width: auto;" class="col-md-10">
+                                                                <div class="right_triangle"></div>
+                                                                <span>${json['msg']}</span>
+                                                            </div>
+                                                        </div>`
+                                    } else if (user !== json['user']['pk']) {
+                                        msg_div = `<div class="sender">
+                                                                    <div>
+                                                                        <img src="{% static 'img/photo4.jpg' %}">
+                                                                    </div>
+                                                                    <div  style="width: auto;" class="col-md-10">
+                                                                        <div class="left_triangle"></div>
+                                                                        <span>${json['msg']}</span>
+                                                                    </div>
+                                                                </div>`;
+                                    }
+                                    msg_board.append(msg_div);
+                                    let divscll = document.getElementById('scroll-card');
+                                    divscll.scrollTop = divscll.scrollHeight;
+                                    break;
+                                //用户状态列表
+                                case 'user':
+                                    //let panel = $("#board-right");
+                                    let user_list = $("#user-list");
+                                    //let contents = [];
+                                    let user_li = ``;
+                                    $.each(json['msg'], function (k, v) {
+                                        /*let user_div = `<div class="row">
+                                                                    <span>${v['user']}</span>：<span>${v['online'] ? "在线" : '离线'}</span>
+                                                               </div>`;
+                                        panel.append(user_div)*/
+                                        user_li += `<li id="user-${v['pk']}" class="list-group-item"><a href="#" onclick="JoinChat(${v['pk']})" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="${v['user']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${v['online'] ? "在线" : '离线'}">${v['user']}</a><span class="ml-5">${v['online'] ? "在线" : '离线'}</span></li>`
+                                        //status = v['online'] ? "在线" : '离线';
+                                        //$("#user-"+v[pk] + " span").text(status);
+                                        user_list.html(user_li);
+                                    });
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                };
+
+                ws.onclose = function () {
+                    console.log("WebSocket 关闭连接");
+                    websocker = null;
+                };
+                return ws
+            };
+
+            websocker = get_websocket();
+
+
+            $("#send_message").on("click", function () {
+                let msg = $("#text_message").val();
+                // 去掉前后空格
+                msg = msg.replace(/(^\s*)|(\s*$)/g, "");
+                if (msg) {
+                    if (websocker === null) {
+                        websocker = get_websocket();
+                        //toastr.clear();
+                        //toastr['error']("websocket重新连接，请重试");
+                    }
+                    if (websocker.readyState == WebSocket.OPEN) {
+                        $("#text_message").val("");
+                        console.log("发送的信息：", msg);
+                        websocker.send(JSON.stringify({"type": "msg", "msg": msg}));
+                    }
+                }
+            });
+
+            $("#logout").on("click", function () {
+                console.log("退出登录");
+                websocker.send(JSON.stringify({"type": "offline"}));
+                //websocker.close();
+            });
+            $("#close").on("click", function () {
+                console.log("退出登录");
+                websocker.send(JSON.stringify({"type": "offline"}));
+                //websocker.close();
+            });
+            $("#open").on("click", function () {
+                console.log("重新连接");
+                websocker.send(JSON.stringify({"type": "online"}));
+                websocker = get_websocket();
+            });
+
+            $('#ChatModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var userStatus = button.data('whatever'); // Extract info from data-* attributes
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                modal.find('#UserNameStatus').text(userStatus);
+            });
+            JoinChat = function (id, type="user") {
+                if(type=='user'){
+                    websocker.send(JSON.stringify({'chat_type': 'user', 'user1': id, 'user2': {{user.id}}}));
+                    $("#msg-board").empty();
+                }else if(type == 'group'){
+                    websocker.send(JSON.stringify({'chat_type': 'group', 'group': id}));
+                }
+
+            };
+
+            $(window).keydown(function (event) {
+                // 通过event.which可以拿到按键代码.  如果是keypress事件中,则拿到ASCII码.
+                if (event.which == 13) {
+                    let msg = $("#text_message").val();
+                    // 去掉前后空格
+                    msg = msg.replace(/(^\s*)|(\s*$)/g, "");
+                    if (msg) {
+                        if (websocker === null) {
+                            websocker = get_websocket();
+                            //toastr.clear();
+                            //toastr['error']("websocket重新连接，请重试");
+                        }
+                        if (websocker.readyState == WebSocket.OPEN) {
+                            $("#text_message").val("");
+                            console.log("发送的信息：", msg);
+                            websocker.send(JSON.stringify({"type": "msg", "msg": msg}));
+                        }
+                    }
+                }
+            });
+
+            // 群列表
+            $.ajax({
+                url: {% url 'group' %},
+                    type: 'GET',
+                    success: function (data) {
+                        if(data.code == 0){
+                            console.log("群列表", data);
+                            let group_ul = $("#group-list");
+                            let group_list = ``;
+                            for(i=0;i<data.groups.length;i++){
+                                group_list += `<li id="" class="list-group-item"><a href="#" onclick="JoinChat(${data.groups[i].id}, type='group')" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="">${data.groups[i].name}</a></li>`
+                            }
+                            group_ul.append(group_list)
+                        }
+                    }
+            });
+
+            $("#create-group-yes").on('click', function () {
+                let user_ids = $("#user-list-group").val();
+                console.log("用户id：", user_ids);
+                $.ajax({
+                    url: {% url 'group' %},
+                    type: 'POST',
+                    data: {'user_ids': JSON.stringify(user_ids)},
+                    success: function (data) {
+                        if(data.code == 0){
+                            console.log("创建成功")
+                        }
+                    }
+                })
+            })
+
+        });
+    </script>
+
+{% endblock %}
