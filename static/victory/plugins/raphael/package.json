@@ -46,7 +46,7 @@
   "description": "JavaScript Vector Library",
   "devDependencies": {
     "bower": "1.8.0",
-    "eslint": "3.10.0",
+    "eslint": "4.18.2",
     "eslint-config-standard": "6.2.1",
     "eslint-loader": "1.6.1",
     "eslint-plugin-promise": "3.3.2",
