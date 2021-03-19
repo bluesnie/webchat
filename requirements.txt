@@ -55,7 +55,7 @@ mysql-connector-python==8.0.14
 mysqlclient==1.4.2.post1
 odfpy==1.4.0
 openpyxl==2.6.2
-Pillow==6.0.0
+Pillow==8.1.1
 protobuf==3.7.1
 pycparser==2.19
 pycryptodome==3.8.2
