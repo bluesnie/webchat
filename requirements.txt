@@ -67,7 +67,7 @@ pypinyin==0.35.3
 pypiwin32==223
 python-alipay-sdk==1.10.1
 pytz==2018.9
-pywin32==225
+pywin32==301
 PyYAML==5.1.1
 qrcode==6.1
 redis==3.3.11
