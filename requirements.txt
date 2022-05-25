@@ -61,7 +61,7 @@ pycparser==2.19
 pycryptodome==3.8.2
 pycryptodomex==3.7.2
 PyHamcrest==1.9.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 PyMySQL==0.9.3
 pypinyin==0.35.3
 pypiwin32==223
